@@ -1,0 +1,21 @@
+.app {
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.app-main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: transform 1s ease;
+}
+
+.app-main.show-game {
+    transform: translateX(-100%);
+}
+
+.app-section {
+    width: 100%;
+    flex: 0 0 auto;
+}

@@ -1,0 +1,49 @@
+.select-difficulty {
+    overflow: hidden;
+}
+
+.select-difficulty-container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.select-difficulty-container.show-customize {
+    transform: translateX(-100%);
+}
+
+.select-difficulty-section {
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.select-difficulty-row {
+    display: flex;
+    justify-content: center;
+}
+
+.select-difficulty-item {
+    width: 300px;
+    height: 300px;
+    margin: 15px;
+    border: 2px solid #666;
+    border-radius: 8px;
+    text-align: center;
+    padding-top: 120px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    width: 80px;
+    float: left;
+}
+
+.form-content {
+    margin-left: 80px;
+}
