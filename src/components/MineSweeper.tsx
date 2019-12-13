@@ -86,7 +86,7 @@ const panelButton2Style = {
     'marginTop':'15px',
 };
 
-export default class MineSweeper extends React.Component<MineSweeperProps,MineSweeperState>{
+export default class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweeperState>{
     constructor(props:MineSweeperProps){
         super(props);
         this.state = {
@@ -98,9 +98,27 @@ export default class MineSweeper extends React.Component<MineSweeperProps,MineSw
             openStatus: [],
             markStatus: [],
             neighbourMineCount:[],
-            // TODO 自动判定胜利
             selectedMineCount:0,
         };
+    }
+
+    componentDidUpdate(prevProps:MineSweeperProps, prevState:MineSweeperState){
+        if(this.state.selectedMineCount !== prevState.selectedMineCount && this.state.selectedMineCount === this.state.mineCount){
+            const match = this.state.mines.every((isMine, index) => {
+                if ((isMine && this.state.markStatus[index] === 1) || (!isMine && this.state.markStatus[index] !== 1)) {
+                    return true;
+                }
+                return false;
+            });
+            if (match) {
+                this.setState({
+                    isEnd:true,
+                },()=>{
+                    alert('win');
+                });
+
+            }
+        }
     }
 
     reStart = ()=>{
@@ -134,6 +152,7 @@ export default class MineSweeper extends React.Component<MineSweeperProps,MineSw
             openStatus:new Array(total).fill(0),
             markStatus:new Array(total).fill(0),
             neighbourMineCount,
+            selectedMineCount:0,
         });
     }
 
@@ -151,9 +170,10 @@ export default class MineSweeper extends React.Component<MineSweeperProps,MineSw
             this.setState({
                 isEnd:true,
                 openStatus,
+            },()=>{
+                alert('mine');
             });
-            alert('mine');
-            // TODO nextTick
+
             return;
         }
 

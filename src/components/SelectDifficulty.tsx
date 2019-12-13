@@ -14,6 +14,9 @@ interface SelectDifficultyState{
 }
 
 export default class SelectDifficulty extends React.Component<SelectDifficultyProps,SelectDifficultyState>{
+    handleWidthChange: (value: number) => void;
+    handleHeightChange: (value: number) => void;
+    handleMinecountChange: (value: number) => void;
     constructor(props:SelectDifficultyProps){
         super(props);
         this.state = {
@@ -22,6 +25,17 @@ export default class SelectDifficulty extends React.Component<SelectDifficultyPr
             height: 16,
             mineCount: 99,
         };
+
+        this.handleWidthChange = this.handleChange.bind(this,'width');
+        this.handleHeightChange = this.handleChange.bind(this,'height');
+        this.handleMinecountChange = this.handleChange.bind(this,'mineCount');
+    }
+
+    handleChange(field:string,value:number):void{
+        const newState  = {
+            [field]:value,
+        };
+        this.setState(newState as unknown as SelectDifficultyState);
     }
 
     showCustomize = ()=>{
@@ -92,6 +106,10 @@ export default class SelectDifficulty extends React.Component<SelectDifficultyPr
                         宽度
                     </label>
                     <MineSweeperInputNumber
+                        value={this.state.width}
+                        setValue={this.handleWidthChange}
+                        max={50}
+                        min={1}
                     />
                 </div>
 
@@ -100,7 +118,10 @@ export default class SelectDifficulty extends React.Component<SelectDifficultyPr
                         高度
                     </label>
                     <MineSweeperInputNumber
-
+                        value={this.state.height}
+                        setValue={this.handleHeightChange}
+                        max={50}
+                        min={1}
                     />
                 </div>
 
@@ -109,6 +130,10 @@ export default class SelectDifficulty extends React.Component<SelectDifficultyPr
                         雷数
                     </label>
                     <MineSweeperInputNumber
+                        value={this.state.mineCount}
+                        setValue={this.handleMinecountChange}
+                        max={this.state.width*this.state.height}
+                        min={1}
                     />
                 </div>
 
