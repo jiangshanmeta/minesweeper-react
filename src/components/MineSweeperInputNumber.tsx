@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    useEffect, 
+} from 'react';
 import './MineSweeperInputNumber.css';
 
 interface MineSweeperInputNumberProps{
@@ -9,86 +11,55 @@ interface MineSweeperInputNumberProps{
     step?:number;
 }
 
-export default class MineSweeperInputNumber extends React.PureComponent<MineSweeperInputNumberProps,object>{
-    componentDidUpdate(prevProps:MineSweeperInputNumberProps){
-        if(this.props.min !== prevProps.min || this.props.max !== prevProps.max){
-            const {
-                value,
-                min = -Infinity,
-                max = Infinity,
-            } = this.props;
+export default function MineSweeperInputNumber(props:MineSweeperInputNumberProps){
+    const {
+        value,
+        setValue,
+        min=-Infinity,
+        max=Infinity,
+        step=1,
+    } = props;
 
-            if(value>max){
-                this.updateValue(max);
-            }
-
-            if(value<min){
-                this.updateValue(min);
-            }
-        }
-    }
-
-    doMinus = ()=>{
-        const {
-            value,
-            step = 1,
-        } = this.props;
-
-        this.updateValue(value-step);
-    }
-
-    doPlus = ()=>{
-        const {
-            value,
-            step = 1,
-        } = this.props;
-
-        this.updateValue(value+step);
-    }
-
-    updateValue(value:number):void{
-        const {
-            max = Infinity,
-            min = -Infinity,
-        } = this.props;
-
-        if(value>max || value<min){
+    function updateValue(value:number){
+        if(Number.isNaN(value) || value>max || value<min){
             return;
         }
-        this.props.setValue(value);
+        setValue(value);
     }
 
-    handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-        const numberVal = Number(e.target.value);
 
-        if(Number.isNaN(numberVal) || !Number.isInteger(numberVal)){
-            return;
+    useEffect(()=>{
+        if(value>max){
+            setValue(max);
         }
 
-        this.updateValue(numberVal);
-    }
+        if(value<min){
+            setValue(min);
+        }
+    },[
+        min,max,value,setValue,
+    ]);
 
-    render(){
-        return (
-            <div className="input-group">
-                <div
-                    className="input-group-addon"
-                    onClick={this.doMinus}
-                >
-                    -
-                </div>
-                <input
-                    className="form-control"
-                    value={this.props.value}
-                    onChange={this.handleChange}
-                />
-                <div
-                    className="input-group-addon"
-                    onClick={this.doPlus}
-                >
-                    +
-                </div>
+
+    return (
+        <div className="input-group">
+            <div
+                className="input-group-addon"
+                onClick={()=>updateValue(value-step)}
+            >
+            -
             </div>
-        );
-    }
+            <input
+                className="form-control"
+                value={props.value}
+                onChange={(e)=>updateValue(Number(e.target.value))}
+            />
+            <div
+                className="input-group-addon"
+                onClick={()=>updateValue(value+step)}
+            >
+            +
+            </div>
+        </div>
+    );
 }

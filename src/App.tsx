@@ -1,49 +1,49 @@
-import React from 'react';
+import React, {
+    useState, 
+} from 'react';
 import SelectDifficulty from 'components/SelectDifficulty';
 import MineSweeper from 'components/MineSweeper';
 import './App.css';
 
-interface AppState{
-    isShowGame:boolean;
-}
+export default function App(){
+    const [
+        isShowGame,setIsShowGame,
+    ] = useState(false);
+    const [
+        width,setWidth,
+    ] = useState(0);
+    const [
+        height,setHeight,
+    ] = useState(0);
+    const [
+        mineCount,setMineCount,
+    ] = useState(0);
 
-export default class App extends React.Component<object,AppState>{
-    mineSweeperRef: React.RefObject<MineSweeper>;
-    constructor(props:object){
-        super(props);
-        this.state = {
-            isShowGame:false,
-        };
-        this.mineSweeperRef = React.createRef();
+    function showGame(width:number,height:number,mineCount:number):void{
+        setIsShowGame(true);
+        setWidth(width);
+        setHeight(height);
+        setMineCount(mineCount);
     }
 
-    showGame = (width:number,height:number,mineCount:number)=>{
-        (this.mineSweeperRef.current as MineSweeper).init(width,height,mineCount);
-        this.setState({
-            isShowGame:true,
-        });
-    
+    function selectDifficulty():void{
+        setIsShowGame(false);
     }
 
-    selectDifficulty = ()=>{
-        this.setState({
-            isShowGame:false,
-        });
-    }
-
-    render(){
-        return (
-            <div className="app">
-                <div className={`app-main ${this.state.isShowGame?'show-game':''}`}>
-                    <SelectDifficulty 
-                        showGame={this.showGame}
-                    />
-                    <MineSweeper
-                        selectDifficulty={this.selectDifficulty}
-                        ref={this.mineSweeperRef}
-                    />
-                </div>
+    return (
+        <div className="app">
+            <div className={`app-main ${isShowGame?'show-game':''}`}>
+                <SelectDifficulty 
+                    showGame={showGame}
+                />
+                <MineSweeper
+                    selectDifficulty={selectDifficulty}
+                    play={isShowGame}
+                    width={width}
+                    height={height}
+                    mineCount={mineCount}
+                />
             </div>
-        );
-    }
+        </div>
+    );
 }

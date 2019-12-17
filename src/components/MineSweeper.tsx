@@ -3,12 +3,13 @@ import './MineSweeper.css';
 
 interface MineSweeperProps{
     selectDifficulty:()=>void;
-}
-
-interface MineSweeperState{
+    play:boolean;
     width:number;
     height:number;
     mineCount:number;
+}
+
+interface MineSweeperState{
     isEnd:boolean;
     mines:Array<number>;
     openStatus:Array<number>;
@@ -90,9 +91,6 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
     constructor(props:MineSweeperProps){
         super(props);
         this.state = {
-            width: 0,
-            height: 0,
-            mineCount: 0,
             isEnd: false,
             mines: [],
             openStatus: [],
@@ -103,7 +101,12 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
     }
 
     componentDidUpdate(prevProps:MineSweeperProps, prevState:MineSweeperState){
-        if(this.state.selectedMineCount !== prevState.selectedMineCount && this.state.selectedMineCount === this.state.mineCount){
+        if(this.props.play && !prevProps.play){
+            this.init(this.props.width,this.props.height,this.props.mineCount);
+        }
+
+
+        if(this.state.selectedMineCount !== prevState.selectedMineCount && this.state.selectedMineCount === this.props.mineCount){
             const match = this.state.mines.every((isMine, index) => {
                 if ((isMine && this.state.markStatus[index] === 1) || (!isMine && this.state.markStatus[index] !== 1)) {
                     return true;
@@ -126,7 +129,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
             width,
             height,
             mineCount,
-        } = this.state;
+        } = this.props;
 
         this.init(width,height,mineCount);
     }
@@ -144,9 +147,6 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         shuffle<number>(mines);
         const neighbourMineCount = calcNeighbourMineCount(width,height,mines);
         this.setState({
-            width,
-            height,
-            mineCount,
             isEnd:false,
             mines,
             openStatus:new Array(total).fill(0),
@@ -160,7 +160,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         if(this.state.isEnd){
             return;
         }
-        const index = x*this.state.width+y;
+        const index = x*this.props.width+y;
         if(this.state.openStatus[index] === 1 || this.state.markStatus[index] === 1){
             return;
         }
@@ -187,7 +187,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         }
 
         const openStatus = this.state.openStatus.slice(0);
-        floodfill(x,y,openStatus,this.state.width,this.state.height,this.state.neighbourMineCount);
+        floodfill(x,y,openStatus,this.props.width,this.props.height,this.state.neighbourMineCount);
         this.setState({
             openStatus,
         });
@@ -197,7 +197,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         if(this.state.isEnd){
             return;
         }
-        const index = x*this.state.width+y;
+        const index = x*this.props.width+y;
         if(this.state.openStatus[index] === 1){
             return;
         }
@@ -221,10 +221,10 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
 
     renderMines(){
         const mines = [];
-        for(let i=0;i<this.state.height;i++){
+        for(let i=0;i<this.props.height;i++){
             const row = [];
-            for(let j=0;j<this.state.width;j++){
-                const index = i*this.state.width+j;
+            for(let j=0;j<this.props.width;j++){
+                const index = i*this.props.width+j;
                 let icon = null;
                 if(this.state.markStatus[index] === 1){
                     icon = (
@@ -288,7 +288,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
                             style={panelFlagStyle}
                         >&#xe778;</span>
                         <div>
-                            {this.state.selectedMineCount} / { this.state.mineCount }
+                            {this.state.selectedMineCount} / { this.props.mineCount }
                         </div>
                     </div>
                     <div>
