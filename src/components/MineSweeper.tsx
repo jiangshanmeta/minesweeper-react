@@ -18,7 +18,7 @@ interface MineSweeperState{
     selectedMineCount:number;
 }
 
-function shuffle<T>(mines:Array<T>):void {
+function shuffle<T>(mines:Array<T>,start:number):void {
     for (let i = 1; i < mines.length; i++) {
         const randomIndex = Math.floor(Math.random() * (i + 1));
         const tmp = mines[randomIndex];
@@ -56,7 +56,7 @@ function floodfill(
 function calcNeighbourMineCount(width:number,height:number,mines:Array<number>):Array<number>{
     const result = new Array(mines.length).fill(0);
     for (let i = 0; i < result.length; i++) {
-        if (mines[i]) {
+        if (!mines[i]) {
             continue;
         }
         const y = i % width;
@@ -71,9 +71,7 @@ function calcNeighbourMineCount(width:number,height:number,mines:Array<number>):
                 if (newY < 0 || newY ===width) {
                     continue;
                 }
-                if (mines[newX * width + newY]) {
-                    result[i]++;
-                }
+                result[newX * width + newY]++;
             }
         }
     }
@@ -144,7 +142,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         for (let i = 0; i < mineCount; i++) {
             mines[i] = 1;
         }
-        shuffle<number>(mines);
+        shuffle<number>(mines,mineCount);
         const neighbourMineCount = calcNeighbourMineCount(width,height,mines);
         this.setState({
             isEnd:false,
