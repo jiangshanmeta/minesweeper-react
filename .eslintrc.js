@@ -1,6 +1,8 @@
 module.exports = {
     root: true,
-    "extends": ["react-app"],
+    "extends": [
+        "react-app",
+    ],
     rules: {
         'indent': [
             'error', 4,
@@ -38,4 +40,4 @@ module.exports = {
         'camelcase': 'off',
     },
 
-}
+};

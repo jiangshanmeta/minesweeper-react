@@ -130,11 +130,11 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
         } = this.props;
 
         this.init(width,height,mineCount);
-    }
+    };
 
     selectDifficulty = ()=>{
         this.props.selectDifficulty();
-    }
+    };
 
     init(width:number,height:number,mineCount:number):void{
         const total = width * height;
@@ -215,7 +215,7 @@ export default class MineSweeper extends React.PureComponent<MineSweeperProps,Mi
 
     handleContextMenu = (event:React.MouseEvent)=>{
         event.preventDefault();
-    }
+    };
 
     renderMines(){
         const mines = [];
