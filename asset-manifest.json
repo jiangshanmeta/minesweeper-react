@@ -1,23 +1,20 @@
 {
   "files": {
-    "main.css": "./static/css/main.74350dd6.chunk.css",
-    "main.js": "./static/js/main.4c319cc9.chunk.js",
-    "main.js.map": "./static/js/main.4c319cc9.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.441a43de.js",
-    "runtime-main.js.map": "./static/js/runtime-main.441a43de.js.map",
-    "static/js/2.1835ae02.chunk.js": "./static/js/2.1835ae02.chunk.js",
-    "static/js/2.1835ae02.chunk.js.map": "./static/js/2.1835ae02.chunk.js.map",
-    "index.html": "./index.html",
-    "precache-manifest.8722e824070b1b77c710bc8f89d9ef6b.js": "./precache-manifest.8722e824070b1b77c710bc8f89d9ef6b.js",
-    "service-worker.js": "./service-worker.js",
-    "static/css/main.74350dd6.chunk.css.map": "./static/css/main.74350dd6.chunk.css.map",
-    "static/js/2.1835ae02.chunk.js.LICENSE": "./static/js/2.1835ae02.chunk.js.LICENSE",
-    "static/media/common.css": "./static/media/iconfont.b054aca5.ttf"
+    "main.css": "/static/css/main.255866c6.css",
+    "main.js": "/static/js/main.72b4f099.js",
+    "static/js/787.8c0d2600.chunk.js": "/static/js/787.8c0d2600.chunk.js",
+    "static/media/iconfont.svg": "/static/media/iconfont.09183ba8e11b430fc411.svg",
+    "static/media/iconfont.eot": "/static/media/iconfont.4e88fc75a5e636ac5d72.eot",
+    "static/media/iconfont.ttf": "/static/media/iconfont.e0d612b11b76b3c3b35f.ttf",
+    "static/media/iconfont.woff": "/static/media/iconfont.3e885d2141e10897d206.woff",
+    "static/media/iconfont.woff2": "/static/media/iconfont.a7e3c08e732a862a33a8.woff2",
+    "index.html": "/index.html",
+    "main.255866c6.css.map": "/static/css/main.255866c6.css.map",
+    "main.72b4f099.js.map": "/static/js/main.72b4f099.js.map",
+    "787.8c0d2600.chunk.js.map": "/static/js/787.8c0d2600.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.441a43de.js",
-    "static/js/2.1835ae02.chunk.js",
-    "static/css/main.74350dd6.chunk.css",
-    "static/js/main.4c319cc9.chunk.js"
+    "static/css/main.255866c6.css",
+    "static/js/main.72b4f099.js"
   ]
 }
