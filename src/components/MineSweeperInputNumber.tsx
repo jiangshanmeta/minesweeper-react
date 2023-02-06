@@ -45,6 +45,7 @@ export default function MineSweeperInputNumber(props:MineSweeperInputNumberProps
         <div className="input-group">
             <div
                 className="input-group-addon"
+                data-testid="minus"
                 onClick={()=>updateValue(value-step)}
             >
             -
@@ -52,10 +53,12 @@ export default function MineSweeperInputNumber(props:MineSweeperInputNumberProps
             <input
                 className="form-control"
                 value={props.value}
+                data-testid="form-input"
                 onChange={(e)=>updateValue(Number(e.target.value))}
             />
             <div
                 className="input-group-addon"
+                data-testid="plus"
                 onClick={()=>updateValue(value+step)}
             >
             +
