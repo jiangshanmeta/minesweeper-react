@@ -30,6 +30,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                         <div
                             className="select-difficulty-item"
                             onClick={()=>props.showGame(8,8,10)}
+                            data-testid="defaultconfig8810"
                         >
                             <div>8 x 8</div>
                             <div>10 个雷</div>
@@ -37,6 +38,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                         <div
                             className="select-difficulty-item"
                             onClick={()=>props.showGame(16,16,40)}
+                            data-testid="defaultconfig161640"
                         >
                             <div>16 x 16</div>
                             <div>40 个雷</div>
@@ -46,6 +48,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                         <div
                             className="select-difficulty-item"
                             onClick={()=>props.showGame(30,16,99)}
+                            data-testid="defaultconfig301699"
                         >
                             <div>30 x 16</div>
                             <div>99 个雷</div>
@@ -53,6 +56,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                         <div
                             className="select-difficulty-item"
                             onClick={()=>setIsShowCustomize(true)}
+                            data-testid="custom-trigger"
                         >
                             <div>?</div>
                             <div>自定义</div>
@@ -61,7 +65,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                 </div>
                 <div className="select-difficulty-section">
                     <div>
-                        <div className="form-group">
+                        <div className="form-group" >
                             <label className="form-label">
                                 宽度
                             </label>
@@ -101,6 +105,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                             <button
                                 className="mine-sweeper-button"
                                 onClick={()=>props.showGame(width,height,mineCount)}
+                                data-testid="play-btn"
                             >
                                 玩游戏
                             </button>
@@ -110,6 +115,7 @@ export default function SelectDifficulty(props:SelectDifficultyProps){
                             <button
                                 className="mine-sweeper-button"
                                 onClick={()=>setIsShowCustomize(false)}
+                                data-testid="cancel-btn"
                             >
                                 取消
                             </button>

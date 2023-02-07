@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import './MineSweeperInputNumber.css';
 
-interface MineSweeperInputNumberProps{
+export interface MineSweeperInputNumberProps{
     value:number;
     setValue:(val:number)=>void;
     min?:number;
