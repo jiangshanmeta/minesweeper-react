@@ -6,16 +6,20 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import SelectDifficulty from './SelectDifficulty';
+import {
+    SelectDifficulty,
+} from './SelectDifficulty';
 import {
     MineSweeperInputNumberProps, 
-} from './MineSweeperInputNumber';
+} from '../MineSweeperInputNumber/MineSweeperInputNumber';
 
-jest.mock('./MineSweeperInputNumber',()=>{
-
-    return function DummyMineSweeperInputNumber(props:MineSweeperInputNumberProps){
-        return <div onClick={()=>props.setValue(props.value+6)} data-testid="dummy-mine-sweeper-input-number">{props.value}</div>;
+jest.mock('../MineSweeperInputNumber/MineSweeperInputNumber',()=>{
+    return {
+        MineSweeperInputNumber:function DummyMineSweeperInputNumber(props:MineSweeperInputNumberProps){
+            return <div onClick={()=>props.setValue(props.value+6)} data-testid="dummy-mine-sweeper-input-number">{props.value}</div>;
+        },
     };
+
 });
 
 test('test snapshot',()=>{

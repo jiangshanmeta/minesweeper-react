@@ -11,7 +11,7 @@ export interface MineSweeperInputNumberProps{
     step?:number;
 }
 
-export default function MineSweeperInputNumber(props:MineSweeperInputNumberProps){
+export function MineSweeperInputNumber(props:MineSweeperInputNumberProps){
     const {
         value,
         setValue,

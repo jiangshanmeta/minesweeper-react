@@ -1,8 +1,11 @@
 import React, {
     useState, 
 } from 'react';
-import SelectDifficulty from './components/SelectDifficulty';
-import MineSweeper from './components/MineSweeper';
+import {
+    SelectDifficulty,
+    MineSweeper,
+} from './components';
+
 import './App.css';
 
 export default function App(){

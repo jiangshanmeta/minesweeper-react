@@ -2,13 +2,15 @@ import React, {
     useState, 
 } from 'react';
 import './SelectDifficulty.css';
-import MineSweeperInputNumber from './MineSweeperInputNumber';
+import {
+    MineSweeperInputNumber,
+} from '../MineSweeperInputNumber/MineSweeperInputNumber';
 
-interface SelectDifficultyProps{
+export interface SelectDifficultyProps{
     showGame:(width:number,height:number,mineCount:number)=>void;
 }
 
-export default function SelectDifficulty(props:SelectDifficultyProps){
+export  function SelectDifficulty(props:SelectDifficultyProps){
     const [
         isShowCustomize,setIsShowCustomize,
     ] = useState(false);

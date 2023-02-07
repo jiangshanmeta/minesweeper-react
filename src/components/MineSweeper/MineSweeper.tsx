@@ -2,9 +2,9 @@ import React from 'react';
 import './MineSweeper.css';
 import {
     shuffle, 
-} from '../utility';
+} from '../../utility';
 
-interface MineSweeperProps{
+export interface MineSweeperProps{
     selectDifficulty:()=>void;
     play:boolean;
     width:number;
@@ -81,7 +81,7 @@ const panelButton2Style = {
     'marginTop':'15px',
 };
 
-export default class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweeperState>{
+export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweeperState>{
     constructor(props:MineSweeperProps){
         super(props);
         this.state = {

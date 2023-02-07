@@ -5,7 +5,9 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import MineSweeperInputNumber from './MineSweeperInputNumber';
+import {
+    MineSweeperInputNumber,
+} from '../MineSweeperInputNumber/MineSweeperInputNumber';
 
 test('test snapshot',()=>{
     const setValue = jest.fn();
