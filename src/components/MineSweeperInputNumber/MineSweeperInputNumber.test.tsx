@@ -9,7 +9,7 @@ import {
     MineSweeperInputNumber,
 } from '../MineSweeperInputNumber/MineSweeperInputNumber';
 
-test('test snapshot',()=>{
+test('snapshot',()=>{
     const setValue = jest.fn();
     const {
         container,

@@ -2,6 +2,7 @@ module.exports = {
     root: true,
     "extends": [
         "react-app",
+        "react-app/jest",
     ],
     rules: {
         'indent': [
@@ -38,6 +39,8 @@ module.exports = {
         ],
         'standard/no-callback-literal': 'off',
         'camelcase': 'off',
+        'testing-library/no-container':'off',
+        'testing-library/no-node-access':'off',
     },
 
 };

@@ -1,5 +1,5 @@
 {
-  "name": "mine",
+  "name": "minesweeper-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -25,12 +25,6 @@
     "lint:es": "eslint src/**/*.{tsx,ts} --fix",
     "lint:css": "stylelint src/**/*.{vue,css} --fix"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -46,5 +40,6 @@
   "devDependencies": {
     "stylelint": "^14.16.1",
     "stylelint-config-standard": "^29.0.0"
-  }
+  },
+  "homepage":"./"
 }

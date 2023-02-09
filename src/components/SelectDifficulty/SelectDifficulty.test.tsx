@@ -22,7 +22,7 @@ jest.mock('../MineSweeperInputNumber/MineSweeperInputNumber',()=>{
 
 });
 
-test('test snapshot',()=>{
+test('snapshot',()=>{
     const showGame = jest.fn();
     const {
         container,
