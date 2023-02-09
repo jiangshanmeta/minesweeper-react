@@ -284,6 +284,68 @@ describe('test left click',()=>{
         expect(mineSweeperItem[8].innerHTML).toBe('');
     });
 
+
+    test('should do nothing if isEnd when click left',()=>{
+        const {
+            container,
+            rerender,
+            asFragment,
+        } = render(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={false} mineCount={1} />);
+
+        rerender(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={true} mineCount={1} />);
+
+        const mineSweeperItem = container.querySelectorAll('.mine-sweeper-item');
+        userEvent.click(mineSweeperItem[0]);
+
+        const firstRender = asFragment();
+
+        userEvent.click(mineSweeperItem[1]);
+
+        expect(asFragment()).toEqual(firstRender);
+    });
+
+
+    test('should do nothing if cell is open',()=>{
+        const {
+            container,
+            rerender,
+            asFragment,
+        } = render(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={false} mineCount={1} />);
+
+        rerender(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={true} mineCount={1} />);
+
+        const mineSweeperItem = container.querySelectorAll('.mine-sweeper-item');
+        userEvent.click(mineSweeperItem[2]);
+
+        const firstRender = asFragment();
+
+        userEvent.click(mineSweeperItem[1]);
+
+        expect(asFragment()).toEqual(firstRender);
+    });
+
+    test('should do nothing if cell is marked as mine',()=>{
+        const {
+            container,
+            rerender,
+            asFragment,
+        } = render(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={false} mineCount={2} />);
+
+        rerender(<MineSweeper selectDifficulty={selectDifficulty} width={3} height={3} play={true} mineCount={2} />);
+
+        const mineSweeperItem = container.querySelectorAll('.mine-sweeper-item');
+        userEvent.click(mineSweeperItem[1],{
+            button:2,
+        });
+
+        const firstRender = asFragment();
+
+        userEvent.click(mineSweeperItem[1]);
+
+
+        expect(asFragment()).toEqual(firstRender);
+    });
+
 });
 
 

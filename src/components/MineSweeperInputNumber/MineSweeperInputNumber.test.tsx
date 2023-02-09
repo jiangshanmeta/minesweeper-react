@@ -9,8 +9,20 @@ import {
     MineSweeperInputNumber,
 } from '../MineSweeperInputNumber/MineSweeperInputNumber';
 
+
+let setValue: jest.Mock<any, any>;
+
+beforeEach(()=>{
+    setValue =  jest.fn();
+});
+
+afterEach(()=>{
+    setValue.mockRestore();
+});
+
+
 test('snapshot',()=>{
-    const setValue = jest.fn();
+    
     const {
         container,
     } = render(<MineSweeperInputNumber value={1} setValue={setValue} />);
@@ -18,7 +30,7 @@ test('snapshot',()=>{
 });
 
 test('component should be rendered',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue} />);
 
     expect(screen.getByTestId('minus')).toBeInTheDocument();
@@ -29,7 +41,7 @@ test('component should be rendered',()=>{
 });
 
 test('plus addon should works with default step',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue}/>);
 
     const plusAddon = screen.getByTestId('plus');
@@ -41,7 +53,7 @@ test('plus addon should works with default step',()=>{
 });
 
 test('plus addon should works with custom step',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue} step={5}/>);
 
     const plusAddon = screen.getByTestId('plus');
@@ -53,7 +65,7 @@ test('plus addon should works with custom step',()=>{
 
 
 test('minus addon should works with default step',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={5} setValue={setValue}/>);
 
     const minusAddon = screen.getByTestId('minus');
@@ -65,7 +77,7 @@ test('minus addon should works with default step',()=>{
 });
 
 test('minus addon should works with custom step',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={13} setValue={setValue} step={5}/>);
 
     const minusAddon = screen.getByTestId('minus');
@@ -76,7 +88,7 @@ test('minus addon should works with custom step',()=>{
 });
 
 test('input form-control should work',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue} />);
 
     const formInput = screen.getByTestId('form-input');
@@ -94,7 +106,7 @@ test('input form-control should work',()=>{
 });
 
 test('input form-control should handle invalid value',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue} />);
 
     const formInput = screen.getByTestId('form-input');
@@ -109,7 +121,7 @@ test('input form-control should handle invalid value',()=>{
 });
 
 test('should handle max value',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={1} setValue={setValue} step={100} max={10} />);
     const plusAddon = screen.getByTestId('plus');
     userEvent.click(plusAddon);
@@ -127,7 +139,7 @@ test('should handle max value',()=>{
 });
 
 test('should handle min value',()=>{
-    const setValue = jest.fn();
+    
     render(<MineSweeperInputNumber value={10} setValue={setValue} step={100} min={5} />);
     const minusAddon = screen.getByTestId('minus');
     userEvent.click(minusAddon);
@@ -142,4 +154,21 @@ test('should handle min value',()=>{
     });
 
     expect(setValue).not.toBeCalled();
+});
+
+
+test('auto-correct value more than max',()=>{
+    
+    render(<MineSweeperInputNumber value={100} setValue={setValue} max={88} />);
+
+    expect(setValue).toBeCalledTimes(1);
+    expect(setValue.mock.calls[0][0]).toBe(88);
+});
+
+test('auto-correct value less than min',()=>{
+    
+    render(<MineSweeperInputNumber value={13} setValue={setValue} min={47} />);
+
+    expect(setValue).toBeCalledTimes(1);
+    expect(setValue.mock.calls[0][0]).toBe(47);
 });

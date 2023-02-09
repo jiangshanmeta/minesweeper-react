@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "npm run lint:es && npm run lint:css",
     "lint:es": "eslint src/**/*.{tsx,ts} --fix",
@@ -40,6 +41,23 @@
   "devDependencies": {
     "stylelint": "^14.16.1",
     "stylelint-config-standard": "^29.0.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/reportWebVitals.ts",
+      "!<rootDir>/src/index.tsx",
+      "!<rootDir>/src/**/*.d.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   },
   "homepage":"./"
 }
