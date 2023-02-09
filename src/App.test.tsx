@@ -27,7 +27,7 @@ test('app-main have class show-game when SelectDifficulty involke showGame', () 
         container,
     } = render(<App />);
 
-    userEvent.click(screen.queryByTestId('dummy-select-difficulty')!);
+    userEvent.click(screen.getByTestId('dummy-select-difficulty'));
 
     expect(container.querySelector('.app-main')?.classList.contains('show-game')).toBe(true);
 });
@@ -37,8 +37,8 @@ test('app-main should not have class show-game when MineSweeper involke selectDi
         container,
     } = render(<App />);
 
-    userEvent.click(screen.queryByTestId('dummy-select-difficulty')!);
-    userEvent.click(screen.queryByTestId('dummy-mine-sweeper')!);
+    userEvent.click(screen.getByTestId('dummy-select-difficulty'));
+    userEvent.click(screen.getByTestId('dummy-mine-sweeper'));
 
     expect(container.querySelector('.app-main')?.classList.contains('show-game')).toBe(false);
 });
@@ -48,7 +48,7 @@ test('should prop currect width height mineCount to MineSweeper',()=>{
 
     render(<App />);
 
-    userEvent.click(screen.queryByTestId('dummy-select-difficulty')!);
+    userEvent.click(screen.getByTestId('dummy-select-difficulty'));
 
     expect(screen.queryByTestId('dummy-mine-sweeper')?.textContent).toBe('8:8:6');
 });

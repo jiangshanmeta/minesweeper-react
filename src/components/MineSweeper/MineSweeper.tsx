@@ -85,7 +85,7 @@ export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweepe
     constructor(props:MineSweeperProps){
         super(props);
         this.state = {
-            isEnd: false,
+            isEnd: true,
             mines: [],
             openStatus: [],
             markStatus: [],
@@ -187,7 +187,7 @@ export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweepe
         });
     }
 
-    handleClickRight(x:number,y:number):void{
+    handleClickRight = (x:number,y:number)=>{
         if(this.state.isEnd){
             return;
         }
@@ -195,19 +195,29 @@ export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweepe
         if(this.state.openStatus[index] === 1){
             return;
         }
-        const markStatus = this.state.markStatus.slice(0);
-        markStatus[index] = (markStatus[index]+1)%3;
-        let selectedMineCount = this.state.selectedMineCount;
-        if(markStatus[index] === 2){
-            selectedMineCount--;
-        }else if(markStatus[index] === 1){
-            selectedMineCount++;
-        }
-        this.setState({
-            markStatus,
-            selectedMineCount,
+
+
+        this.setState((oldState)=>{
+            const markStatus = [
+                ...oldState.markStatus,
+            ];
+            markStatus[index] = (markStatus[index]+1)%3;
+
+            let selectedMineCount = oldState.selectedMineCount;
+            if(markStatus[index] === 2){
+                selectedMineCount--;
+            }else if(markStatus[index] === 1){
+                selectedMineCount++;
+            }
+
+            return {
+                ...oldState,
+                markStatus,
+                selectedMineCount,
+            };
         });
-    }
+        
+    };
 
     handleContextMenu = (event:React.MouseEvent)=>{
         event.preventDefault();
@@ -282,13 +292,16 @@ export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweepe
                             style={panelFlagStyle}
                         >&#xe778;</span>
                         <div>
-                            {this.state.selectedMineCount} / { this.props.mineCount }
+                            <span data-testid="selectedMineCount">{this.state.selectedMineCount}</span> 
+                            / 
+                            <span data-testid="mineCount">{ this.props.mineCount }</span>
                         </div>
                     </div>
                     <div>
                         <button
                             className="mine-sweeper-button"
                             onClick={this.reStart}
+                            data-testid="restart"
                         >
                             重开一局
                         </button>
@@ -297,6 +310,7 @@ export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweepe
                             className="mine-sweeper-button"
                             style= {panelButton2Style}
                             onClick={this.selectDifficulty}
+                            data-testid="change-difficulty"
                         >
                             改变难度
                         </button>
