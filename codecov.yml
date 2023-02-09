@@ -1,3 +1,0 @@
-parsers:
-  typescript:
-    partials_as_hits: true #false by default
