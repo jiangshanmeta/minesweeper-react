@@ -22,8 +22,20 @@ jest.mock('../MineSweeperInputNumber/MineSweeperInputNumber',()=>{
 
 });
 
+
+let showGame: jest.Mock<any, any>;
+
+beforeEach(()=>{
+    showGame = jest.fn();
+});
+
+afterEach(()=>{
+    showGame.mockRestore();
+});
+
+
 test('snapshot',()=>{
-    const showGame = jest.fn();
+
     const {
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -31,7 +43,7 @@ test('snapshot',()=>{
 });
 
 test('default config 8 8 10 should work',()=>{
-    const showGame = jest.fn();
+    
     render(<SelectDifficulty showGame={showGame} />);
 
     userEvent.click(screen.getByTestId('defaultconfig8810'));
@@ -42,7 +54,7 @@ test('default config 8 8 10 should work',()=>{
 });
 
 test('default config 16 16 40 should work',()=>{
-    const showGame = jest.fn();
+    
     render(<SelectDifficulty showGame={showGame} />);
 
     userEvent.click(screen.getByTestId('defaultconfig161640'));
@@ -53,7 +65,7 @@ test('default config 16 16 40 should work',()=>{
 });
 
 test('default config 30 16 99 should work',()=>{
-    const showGame = jest.fn();
+    
     render(<SelectDifficulty showGame={showGame} />);
 
     userEvent.click(screen.getByTestId('defaultconfig301699'));
@@ -65,7 +77,7 @@ test('default config 30 16 99 should work',()=>{
 
 
 test('select-difficulty-container should not has class show-customize by default',()=>{
-    const showGame = jest.fn();
+    
     const {
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -74,7 +86,7 @@ test('select-difficulty-container should not has class show-customize by default
 });
 
 test('select-difficulty-container should has class show-customize when click the custom btn',()=>{
-    const showGame = jest.fn();
+    
     const {
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -84,7 +96,7 @@ test('select-difficulty-container should has class show-customize when click the
 });
 
 test('should remove class show-customize when click cancel btn',()=>{
-    const showGame = jest.fn();
+    
     const {
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -96,7 +108,7 @@ test('should remove class show-customize when click cancel btn',()=>{
 });
 
 test('should call prop showGame with default config when click play-btn',()=>{
-    const showGame = jest.fn();
+    
     render(<SelectDifficulty showGame={showGame} />);
 
     userEvent.click(screen.getByTestId('play-btn'));
@@ -108,7 +120,7 @@ test('should call prop showGame with default config when click play-btn',()=>{
 });
 
 test('default width should be 30',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -118,7 +130,7 @@ test('default width should be 30',()=>{
 });
 
 test('setWidth works',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -134,7 +146,7 @@ test('setWidth works',()=>{
 });
 
 test('default height should be 16',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -144,7 +156,7 @@ test('default height should be 16',()=>{
 });
 
 test('setHeight works',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -162,7 +174,7 @@ test('setHeight works',()=>{
 });
 
 test('default mineCount should be 99',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
@@ -172,7 +184,7 @@ test('default mineCount should be 99',()=>{
 });
 
 test('setMineCount works',()=>{
-    const showGame = jest.fn();
+    
     const { 
         container,
     } = render(<SelectDifficulty showGame={showGame} />);
