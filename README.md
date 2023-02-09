@@ -1,5 +1,7 @@
 # minesweeper-react
 
+[![codecov](https://codecov.io/gh/jiangshanmeta/minesweeper-react/branch/master/graph/badge.svg?token=G0EGK1TPRX)](https://codecov.io/gh/jiangshanmeta/minesweeper-react)
+
 React实现扫雷游戏
 
 游戏界面参考Ubuntu19.04自带的扫雷
