@@ -8,8 +8,10 @@ import {
 } from '../../utility';
 
 import {
-    useUpdateEffect,
-} from 'ahooks';
+    useUpdateEffect, 
+} from '../../hooks';
+
+
 
 export interface MineSweeperProps{
     selectDifficulty:()=>void;
