@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {
+    useRef,
+    useState, 
+} from 'react';
 import './MineSweeper.css';
 import {
     shuffle, 
 } from '../../utility';
+
+import {
+    useUpdateEffect,
+} from 'ahooks';
 
 export interface MineSweeperProps{
     selectDifficulty:()=>void;
@@ -11,17 +18,6 @@ export interface MineSweeperProps{
     height:number;
     mineCount:number;
 }
-
-interface MineSweeperState{
-    isEnd:boolean;
-    mines:Array<number>;
-    openStatus:Array<number>;
-    markStatus:Array<number>;
-    neighbourMineCount:Array<number>;
-    selectedMineCount:number;
-}
-
-
 
 function floodfill(
     x:number,
@@ -81,242 +77,224 @@ const panelButton2Style = {
     'marginTop':'15px',
 };
 
-export class MineSweeper extends React.PureComponent<MineSweeperProps,MineSweeperState>{
-    constructor(props:MineSweeperProps){
-        super(props);
-        this.state = {
-            isEnd: true,
-            mines: [],
-            openStatus: [],
-            markStatus: [],
-            neighbourMineCount:[],
-            selectedMineCount:0,
-        };
-    }
+export const MineSweeper:React.FC<MineSweeperProps> = (props)=>{
+    const {
+        selectDifficulty,
+        play,
+        width,
+        height,
+        mineCount,
+    } = props;
 
-    componentDidUpdate(prevProps:MineSweeperProps, prevState:MineSweeperState){
-        if(this.props.play && !prevProps.play){
-            this.init(this.props.width,this.props.height,this.props.mineCount);
-        }
+    const [
+        isEnd,setIsEnd,
+    ] = useState(true);
+    const [
+        mines,setMines,
+    ] = useState<number[]>([]);
+    const [
+        openStatus,setOpenStatus,
+    ] = useState<Array<0 | 1>>([]);
+    const [
+        markStatus,setMarkStatus,
+    ] = useState<Array<0 | 1 | 2>>([]);
+    const [
+        neighbourMineCount,setNeighbourMineCount,
+    ] = useState<number[]>([]);
+    const [
+        selectedMineCount,setSelectedMineCount,
+    ] = useState(0);
 
-
-        if(this.state.selectedMineCount !== prevState.selectedMineCount && this.state.selectedMineCount === this.props.mineCount){
-            const match = this.state.mines.every((isMine, index) => {
-                if ((isMine && this.state.markStatus[index] === 1) || (!isMine && this.state.markStatus[index] !== 1)) {
-                    return true;
-                }
-                return false;
-            });
-            if (match) {
-                this.setState({
-                    isEnd:true,
-                },()=>{
-                    alert('win');
-                });
-
-            }
-        }
-    }
-
-    reStart = ()=>{
-        const {
-            width,
-            height,
-            mineCount,
-        } = this.props;
-
-        this.init(width,height,mineCount);
-    };
-
-    selectDifficulty = ()=>{
-        this.props.selectDifficulty();
-    };
-
-    init(width:number,height:number,mineCount:number):void{
+    const init = ()=>{
         const total = width * height;
-        const mines = new Array(total).fill(0);
+        const newMines = new Array(total).fill(0);
         for (let i = 0; i < mineCount; i++) {
-            mines[i] = 1;
+            newMines[i] = 1;
         }
-        shuffle<number>(mines,mineCount);
-        const neighbourMineCount = calcNeighbourMineCount(width,height,mines);
-        this.setState({
-            isEnd:false,
-            mines,
-            openStatus:new Array(total).fill(0),
-            markStatus:new Array(total).fill(0),
-            neighbourMineCount,
-            selectedMineCount:0,
-        });
-    }
+        shuffle<number>(newMines,mineCount);
 
-    handleClickLeft(x:number,y:number):void{
-        if(this.state.isEnd){
+        setIsEnd(false);
+        setMines(newMines);
+        setOpenStatus(new Array(total).fill(0));
+        setMarkStatus(new Array(total).fill(0));
+        setNeighbourMineCount(calcNeighbourMineCount(width,height,newMines));
+        setSelectedMineCount(0);
+
+    };
+
+    const handleClickLeft = (x:number,y:number)=>{
+        if(isEnd){
             return;
         }
-        const index = x*this.props.width+y;
-        if(this.state.openStatus[index] === 1 || this.state.markStatus[index] === 1){
+        const index = x*width+y;
+        if(openStatus[index] === 1 || markStatus[index] === 1){
             return;
         }
-        if(this.state.mines[index]){
-            const openStatus = this.state.openStatus.slice(0);
-            openStatus[index] = 1;
-            this.setState({
-                isEnd:true,
-                openStatus,
-            },()=>{
-                alert('mine');
-            });
+        if(mines[index]){
+            const newOpenStatus = openStatus.slice(0);
+            newOpenStatus[index] = 1;
+            setIsEnd(true);
+            setOpenStatus(newOpenStatus);
+            alert('mine');
 
             return;
         }
 
-        if(this.state.neighbourMineCount[index]>0){
-            const openStatus = this.state.openStatus.slice(0);
-            openStatus[index] = 1;
-            this.setState({
-                openStatus,
-            });
+        if(neighbourMineCount[index]>0){
+            const newOpenStatus = openStatus.slice(0);
+            newOpenStatus[index] = 1;
+            setOpenStatus(newOpenStatus);
             return;
         }
 
-        const openStatus = this.state.openStatus.slice(0);
-        floodfill(x,y,openStatus,this.props.width,this.props.height,this.state.neighbourMineCount);
-        this.setState({
-            openStatus,
-        });
-    }
+        const newOpenStatus = openStatus.slice(0);
+        floodfill(x,y,newOpenStatus,width,height,neighbourMineCount);
+        setOpenStatus(newOpenStatus);
+    };
 
-    handleClickRight = (x:number,y:number)=>{
-        if(this.state.isEnd){
+    const handleClickRight = (x:number,y:number)=>{
+        if(isEnd){
             return;
         }
-        const index = x*this.props.width+y;
-        if(this.state.openStatus[index] === 1){
+        const index = x*width+y;
+        if(openStatus[index] === 1){
             return;
         }
 
+        const newMarkStatus = [
+            ...markStatus,
+        ];
+        newMarkStatus[index] = ((newMarkStatus[index]+1)%3) as (0 | 1 | 2);
+        let newSelectedMineCount = selectedMineCount;
+        if(newMarkStatus[index] === 2){
+            newSelectedMineCount--;
+        }else if(newMarkStatus[index] === 1){
+            newSelectedMineCount++;
+        }
+        setMarkStatus(newMarkStatus);
+        setSelectedMineCount(newSelectedMineCount);
+    };
 
-        this.setState((oldState)=>{
-            const markStatus = [
-                ...oldState.markStatus,
-            ];
-            markStatus[index] = (markStatus[index]+1)%3;
+    const mineCountRef = useRef(mineCount);
+    mineCountRef.current = mineCount;
 
-            let selectedMineCount = oldState.selectedMineCount;
-            if(markStatus[index] === 2){
-                selectedMineCount--;
-            }else if(markStatus[index] === 1){
-                selectedMineCount++;
-            }
+    
+    useUpdateEffect(()=>{
+        if(play){
+            init();
+        }
+    
+    },[
+        play,
+    ]);
 
-            return {
-                ...oldState,
-                markStatus,
-                selectedMineCount,
-            };
-        });
+
+    useUpdateEffect(()=>{
+        if(selectedMineCount !== mineCount){
+            return;
+        }
         
-    };
-
-    handleContextMenu = (event:React.MouseEvent)=>{
-        event.preventDefault();
-    };
-
-    renderMines(){
-        const mines = [];
-        for(let i=0;i<this.props.height;i++){
-            const row = [];
-            for(let j=0;j<this.props.width;j++){
-                const index = i*this.props.width+j;
-                let icon = null;
-                if(this.state.markStatus[index] === 1){
-                    icon = (
-                        <span className="iconfont">&#xe778;</span>
-                    );
-                }else if(this.state.markStatus[index] === 2){
-                    icon = (
-                        <span className="iconfont">&#xe720;</span>
-                    );
-                }else if(this.state.openStatus[index] === 1){
-                    if(this.state.mines[index]){
-                        icon = (
-                            <span className="iconfont">&#xe63a;</span>
-                        );
-                    }else if(this.state.neighbourMineCount[index]>0){
-                        icon = (
-                            <span>
-                                {this.state.neighbourMineCount[index]}    
-                            </span>
-                        );
-                    }
-                }
-
-                row.push(
-                    <div 
-                        className={`mine-sweeper-item ${this.state.openStatus[index]?'is-open':''}`}
-                        key={j}
-                        onClick={()=>this.handleClickLeft(i,j)}
-                        onContextMenu={(e)=>this.handleClickRight(i,j)}
-                    >
-                        {icon}
-                    </div>
-                );
+        const match = mines.every((isMine, index) => {
+            if ((isMine && markStatus[index] === 1) || (!isMine && markStatus[index] !== 1)) {
+                return true;
             }
-            mines.push(
-                <div className="mine-sweeper-row" key={i}>
-                    {row}
-                </div>
-            );
+            return false;
+        });
+        if(match){
+            setIsEnd(true);
+            alert('win');
         }
+    },[
+        selectedMineCount,
+    ]);
 
 
-        return (
+
+
+    return (
+        <div className="app-section game-container" >
             <div 
                 className="mine-sweeper-container"
-                onContextMenu={this.handleContextMenu}
+                onContextMenu={(e)=>e.preventDefault()}
             >
-                {mines}
-            </div>
-        );
-    }
+                {new Array(height).fill(0).map((_,i)=>{
+                    return (
+                        <div className="mine-sweeper-row" key={i}>
+                            {new Array(width).fill(0).map((__,j)=>{
+                                const index = i*width+j;
+                                let icon:React.ReactNode = null;
+                                if(markStatus[index] === 1){
+                                    icon = (
+                                        <span className="iconfont">&#xe778;</span>
+                                    );
+                                }else if(markStatus[index] === 2){
+                                    icon = (
+                                        <span className="iconfont">&#xe720;</span>
+                                    );
+                                }else if(openStatus[index] === 1){
+                                    if(mines[index]){
+                                        icon = (
+                                            <span className="iconfont">&#xe63a;</span>
+                                        );
+                                    }else if(neighbourMineCount[index]>0){
+                                        icon = (
+                                            <span>
+                                                {neighbourMineCount[index]}    
+                                            </span>
+                                        );
+                                    }
+                                }
 
-    render(){
-        return (
-            <div className="app-section game-container" >
-                {this.renderMines()}
-                <div className="panel-container">
-                    <div className="panel-data-container">
-                        <span
-                            className="iconfont"
-                            style={panelFlagStyle}
-                        >&#xe778;</span>
-                        <div>
-                            <span data-testid="selectedMineCount">{this.state.selectedMineCount}</span> 
-                            / 
-                            <span data-testid="mineCount">{ this.props.mineCount }</span>
+                                return (
+                                    <div 
+                                        className={`mine-sweeper-item ${openStatus[index]?'is-open':''}`}
+                                        key={j}
+                                        onClick={()=>handleClickLeft(i,j)}
+                                        onContextMenu={()=>handleClickRight(i,j)}
+                                    >
+                                        {icon}
+                                    </div>
+                                );
+                                    
+                            })}
                         </div>
-                    </div>
-                    <div>
-                        <button
-                            className="mine-sweeper-button"
-                            onClick={this.reStart}
-                            data-testid="restart"
-                        >
-                            重开一局
-                        </button>
+                    );
 
-                        <button
-                            className="mine-sweeper-button"
-                            style= {panelButton2Style}
-                            onClick={this.selectDifficulty}
-                            data-testid="change-difficulty"
-                        >
-                            改变难度
-                        </button>
+
+
+                })}
+            </div>
+            <div className="panel-container">
+                <div className="panel-data-container">
+                    <span
+                        className="iconfont"
+                        style={panelFlagStyle}
+                    >&#xe778;</span>
+                    <div>
+                        <span data-testid="selectedMineCount">{selectedMineCount}</span> 
+                        / 
+                        <span data-testid="mineCount">{ mineCount }</span>
                     </div>
                 </div>
+                <div>
+                    <button
+                        className="mine-sweeper-button"
+                        onClick={()=>init()}
+                        data-testid="restart"
+                    >
+                        重开一局
+                    </button>
+
+                    <button
+                        className="mine-sweeper-button"
+                        style= {panelButton2Style}
+                        onClick={()=>selectDifficulty()}
+                        data-testid="change-difficulty"
+                    >
+                        改变难度
+                    </button>
+                </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
