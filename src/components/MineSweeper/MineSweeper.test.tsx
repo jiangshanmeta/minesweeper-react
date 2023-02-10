@@ -371,3 +371,24 @@ test('restart should work',()=>{
 
     expect(asFragment()).toEqual(firstRender);
 });
+
+test('only init when play from false to true',()=>{
+    const {
+        container,
+        rerender,
+        asFragment,
+    } = render(<MineSweeper selectDifficulty={selectDifficulty} width={2} height={2} play={false} mineCount={1} />);
+    rerender(<MineSweeper selectDifficulty={selectDifficulty} width={2} height={2} play={true} mineCount={1} />);
+
+    const mineSweeperItem = container.querySelectorAll('.mine-sweeper-item');
+
+    userEvent.click(mineSweeperItem[1],{
+        button:2,
+    });
+
+    const firstRender = asFragment();
+
+    rerender(<MineSweeper selectDifficulty={selectDifficulty} width={2} height={2} play={false} mineCount={1} />);
+
+    expect(asFragment()).toEqual(firstRender);
+});
