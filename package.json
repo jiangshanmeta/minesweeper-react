@@ -39,7 +39,7 @@
     ]
   },
   "devDependencies": {
-    "stylelint": "^14.16.1",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard": "^29.0.0"
   },
   "jest": {
