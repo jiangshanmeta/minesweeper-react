@@ -24,7 +24,7 @@ jobs:
           npm i
           npm run test:coverage
 
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
         with:
           # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           files: coverage/lcov.info # https://community.codecov.com/t/wrong-coverage-percentage/1775/12
@@ -32,3 +32,6 @@ jobs:
           name: codecov-umbrella # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          
